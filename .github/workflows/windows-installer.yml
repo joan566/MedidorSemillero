@@ -1,0 +1,76 @@
+name: Windows installer
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build-exe:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+
+      - name: Build fat jar
+        shell: bash
+        run: ./mvnw -B clean package
+
+      - name: Resolve app version
+        id: version
+        shell: bash
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
+            version="${GITHUB_REF#refs/tags/v}"
+          else
+            # First <version> tag in pom.xml is the project version.
+            version=$(grep -m1 '<version>' pom.xml | sed -E 's/.*<version>(.*)<\/version>.*/\1/')
+          fi
+          # jpackage requires a plain numeric version (no "-SNAPSHOT" etc.)
+          version=$(echo "$version" | sed -E 's/-.*$//')
+          echo "value=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Stage jpackage input
+        shell: bash
+        run: |
+          mkdir -p dist-input
+          cp target/semillero-app.jar dist-input/
+
+      - name: Build .exe with jpackage
+        shell: bash
+        run: |
+          jpackage \
+            --type exe \
+            --name "FondoDeAhorro" \
+            --app-version "${{ steps.version.outputs.value }}" \
+            --vendor "Semillero" \
+            --description "Sistema de administración de fondo de ahorro" \
+            --input dist-input \
+            --main-jar semillero-app.jar \
+            --main-class com.playground.fondoahorro.Main \
+            --icon src/main/resources/icon/app.ico \
+            --win-per-user-install \
+            --win-shortcut \
+            --win-menu \
+            --win-dir-chooser \
+            --dest dist
+
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: FondoDeAhorro-installer
+          path: dist/*.exe
+
+      - name: Attach installer to release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.exe
