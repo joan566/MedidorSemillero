@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.playground.fondoahorro.presentation.loan.LoanFormController"
+      spacing="10" prefWidth="360">
+    <padding>
+        <Insets top="16" right="16" bottom="4" left="16"/>
+    </padding>
+    <Label text="Datos del préstamo" styleClass="section-title"/>
+    <Label text="Persona" styleClass="field-label"/>
+    <ComboBox fx:id="personCombo" maxWidth="Infinity"/>
+    <Label text="Monto" styleClass="field-label"/>
+    <TextField fx:id="amountField" promptText="Ej: 500000"/>
+    <Label text="Fecha" styleClass="field-label"/>
+    <DatePicker fx:id="datePicker" maxWidth="Infinity"/>
+    <Label text="Interés (%)" styleClass="field-label"/>
+    <TextField fx:id="interestField"/>
+    <Label text="Medio de pago" styleClass="field-label"/>
+    <ComboBox fx:id="methodCombo" maxWidth="Infinity"/>
+    <Label text="Observación (opcional)" styleClass="field-label"/>
+    <TextField fx:id="notesField"/>
+
+    <VBox styleClass="card" spacing="6">
+        <HBox alignment="CENTER_LEFT" spacing="8">
+            <Label text="Interés aplicado" styleClass="metric-label"/>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Label fx:id="interestPreviewLabel" styleClass="metric-label"/>
+        </HBox>
+        <HBox alignment="CENTER_LEFT" spacing="8">
+            <Label text="Total a pagar" styleClass="section-title"/>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Label fx:id="totalPreviewLabel" styleClass="metric-value"/>
+        </HBox>
+    </VBox>
+
+    <Label fx:id="errorLabel" styleClass="field-error" wrapText="true" visible="false" managed="false"/>
+</VBox>

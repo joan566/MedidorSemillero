@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.playground.fondoahorro.presentation.birthday.BirthdayListController"
+      spacing="16">
+    <VBox spacing="2">
+        <Label text="Cumpleaños" styleClass="page-title"/>
+        <Label text="Consulta los próximos cumpleaños y registra los regalos." styleClass="page-subtitle"/>
+    </VBox>
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent;">
+        <FlowPane fx:id="cardsContainer" hgap="16" vgap="16">
+            <padding>
+                <Insets top="4" right="4" bottom="4" left="4"/>
+            </padding>
+        </FlowPane>
+    </ScrollPane>
+</VBox>

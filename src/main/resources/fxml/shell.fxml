@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.playground.fondoahorro.presentation.shell.ShellController"
+            styleClass="app-root">
+    <left>
+        <VBox styleClass="sidebar" spacing="4" prefWidth="224">
+            <padding>
+                <Insets top="24" right="12" bottom="20" left="12"/>
+            </padding>
+            <Label text="Fondo de Ahorro" styleClass="sidebar-title"/>
+            <fx:define>
+                <ToggleGroup fx:id="navGroup"/>
+            </fx:define>
+            <VBox spacing="2">
+                <padding>
+                    <Insets top="24"/>
+                </padding>
+                <ToggleButton fx:id="dashboardNav" text="Dashboard" toggleGroup="$navGroup" selected="true" onAction="#showDashboard" styleClass="nav-button" maxWidth="Infinity"/>
+                <ToggleButton fx:id="personsNav" text="Personas" toggleGroup="$navGroup" onAction="#showPersons" styleClass="nav-button" maxWidth="Infinity"/>
+                <ToggleButton fx:id="savingsNav" text="Ahorros" toggleGroup="$navGroup" onAction="#showSavings" styleClass="nav-button" maxWidth="Infinity"/>
+                <ToggleButton fx:id="loansNav" text="Préstamos" toggleGroup="$navGroup" onAction="#showLoans" styleClass="nav-button" maxWidth="Infinity"/>
+                <ToggleButton fx:id="birthdaysNav" text="Cumpleaños" toggleGroup="$navGroup" onAction="#showBirthdays" styleClass="nav-button" maxWidth="Infinity"/>
+                <ToggleButton fx:id="settlementsNav" text="Liquidaciones" toggleGroup="$navGroup" onAction="#showSettlements" styleClass="nav-button" maxWidth="Infinity"/>
+                <ToggleButton fx:id="movementsNav" text="Movimientos" toggleGroup="$navGroup" onAction="#showMovements" styleClass="nav-button" maxWidth="Infinity"/>
+            </VBox>
+            <Region VBox.vgrow="ALWAYS"/>
+            <Region styleClass="sidebar-separator" prefHeight="1" maxHeight="1"/>
+            <VBox spacing="2">
+                <padding>
+                    <Insets top="8"/>
+                </padding>
+                <ToggleButton fx:id="settingsNav" text="Configuración" toggleGroup="$navGroup" onAction="#showSettings" styleClass="nav-button" maxWidth="Infinity"/>
+            </VBox>
+        </VBox>
+    </left>
+    <center>
+        <StackPane fx:id="contentArea" styleClass="content-area"/>
+    </center>
+</BorderPane>

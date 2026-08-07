@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.playground.fondoahorro.presentation.person.PersonDetailController"
+      spacing="16">
+    <HBox spacing="12" alignment="CENTER_LEFT">
+        <Button text="← Volver" onAction="#handleBack" styleClass="secondary-button"/>
+    </HBox>
+    <HBox spacing="16" alignment="CENTER_LEFT">
+        <Label fx:id="nameLabel" styleClass="page-title"/>
+        <Label fx:id="statusLabel" style="-fx-font-weight: bold;"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Button text="Editar" onAction="#handleEdit" styleClass="secondary-button"/>
+        <Button fx:id="toggleActiveButton" onAction="#handleToggleActive" styleClass="danger-button"/>
+    </HBox>
+    <HBox spacing="24">
+        <VBox spacing="4">
+            <Label text="Fecha de nacimiento" styleClass="metric-label"/>
+            <Label fx:id="birthDateLabel"/>
+        </VBox>
+        <VBox spacing="4">
+            <Label text="Teléfono" styleClass="metric-label"/>
+            <Label fx:id="phoneLabel"/>
+        </VBox>
+    </HBox>
+    <HBox spacing="16">
+        <VBox styleClass="card" spacing="6" HBox.hgrow="ALWAYS">
+            <Label text="TOTAL AHORRADO" styleClass="metric-label"/>
+            <Label fx:id="savingsValueLabel" styleClass="metric-value value-income"/>
+        </VBox>
+        <VBox styleClass="card" spacing="6" HBox.hgrow="ALWAYS">
+            <Label text="DEUDA PENDIENTE" styleClass="metric-label"/>
+            <Label fx:id="debtValueLabel" styleClass="metric-value value-expense"/>
+        </VBox>
+    </HBox>
+    <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+        <Tab text="Ahorros">
+            <StackPane fx:id="savingsTabContent"/>
+        </Tab>
+        <Tab text="Préstamos">
+            <StackPane fx:id="loansTabContent"/>
+        </Tab>
+        <Tab text="Movimientos">
+            <StackPane fx:id="movementsTabContent"/>
+        </Tab>
+        <Tab text="Liquidaciones">
+            <StackPane fx:id="settlementsTabContent"/>
+        </Tab>
+    </TabPane>
+</VBox>

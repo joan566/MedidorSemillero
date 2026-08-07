@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.playground.fondoahorro.presentation.dashboard.DashboardController"
+      spacing="16">
+    <VBox spacing="2">
+        <Label fx:id="greetingLabel" styleClass="page-title"/>
+        <Label text="Este es el resumen actual del fondo." styleClass="page-subtitle"/>
+    </VBox>
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent;">
+        <VBox spacing="16">
+            <padding>
+                <Insets top="4" right="4" bottom="16" left="4"/>
+            </padding>
+
+            <FlowPane hgap="16" vgap="16">
+                <VBox styleClass="card" spacing="10" prefWidth="260">
+                    <Label fx:id="savingsHeaderLabel" text="Fondo de ahorro" styleClass="metric-label" contentDisplay="LEFT" graphicTextGap="8"/>
+                    <Label fx:id="savingsTotalLabel" styleClass="metric-hero value-income"/>
+                    <HBox spacing="24">
+                        <VBox spacing="2">
+                            <Label text="Efectivo" styleClass="metric-label"/>
+                            <Label fx:id="savingsCashLabel"/>
+                        </VBox>
+                        <VBox spacing="2">
+                            <Label text="Transferencia" styleClass="metric-label"/>
+                            <Label fx:id="savingsTransferLabel"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <VBox styleClass="card" spacing="10" prefWidth="260">
+                    <Label fx:id="birthdayHeaderLabel" text="Fondo de cumpleaños" styleClass="metric-label" contentDisplay="LEFT" graphicTextGap="8"/>
+                    <Label fx:id="birthdayTotalLabel" styleClass="metric-hero value-income"/>
+                    <HBox spacing="24">
+                        <VBox spacing="2">
+                            <Label text="Efectivo" styleClass="metric-label"/>
+                            <Label fx:id="birthdayCashLabel"/>
+                        </VBox>
+                        <VBox spacing="2">
+                            <Label text="Transferencia" styleClass="metric-label"/>
+                            <Label fx:id="birthdayTransferLabel"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <VBox styleClass="card" spacing="10" prefWidth="360">
+                    <Label fx:id="loansHeaderLabel" text="Préstamos" styleClass="metric-label" contentDisplay="LEFT" graphicTextGap="8"/>
+                    <HBox spacing="16">
+                        <VBox spacing="2" prefWidth="105">
+                            <Label text="Dinero prestado" styleClass="metric-label" wrapText="true"/>
+                            <Label fx:id="loanedMoneyLabel" styleClass="metric-value" style="-fx-font-size: 18px;"/>
+                        </VBox>
+                        <VBox spacing="2" prefWidth="105">
+                            <Label text="Deuda pendiente" styleClass="metric-label" wrapText="true"/>
+                            <Label fx:id="outstandingDebtLabel" styleClass="metric-value value-expense" style="-fx-font-size: 18px;"/>
+                        </VBox>
+                        <VBox spacing="2" prefWidth="105">
+                            <Label text="Préstamos activos" styleClass="metric-label" wrapText="true"/>
+                            <Label fx:id="activeLoanCountLabel" styleClass="metric-value" style="-fx-font-size: 18px;"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <VBox styleClass="card" spacing="10" prefWidth="200">
+                    <Label fx:id="personsHeaderLabel" text="Participantes" styleClass="metric-label" contentDisplay="LEFT" graphicTextGap="8"/>
+                    <Label fx:id="personCountLabel" styleClass="metric-value" style="-fx-font-size: 30px;"/>
+                    <Label text="Total de personas activas" styleClass="metric-label"/>
+                </VBox>
+            </FlowPane>
+
+            <HBox spacing="16">
+                <VBox styleClass="card" spacing="10" HBox.hgrow="ALWAYS">
+                    <Label text="Próximos cumpleaños" styleClass="section-title"/>
+                    <VBox fx:id="birthdaysContainer" spacing="10"/>
+                </VBox>
+                <VBox styleClass="card" spacing="10" HBox.hgrow="ALWAYS">
+                    <Label text="Actividad reciente" styleClass="section-title"/>
+                    <VBox fx:id="activityContainer" spacing="4"/>
+                </VBox>
+            </HBox>
+        </VBox>
+    </ScrollPane>
+</VBox>

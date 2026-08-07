@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.playground.fondoahorro.presentation.person.PersonFormController"
+      spacing="10" prefWidth="360">
+    <padding>
+        <Insets top="16" right="16" bottom="4" left="16"/>
+    </padding>
+    <Label text="Información personal" styleClass="section-title"/>
+    <Label text="Nombre" styleClass="field-label"/>
+    <TextField fx:id="nameField"/>
+    <Label text="Fecha de nacimiento" styleClass="field-label"/>
+    <DatePicker fx:id="birthDatePicker" maxWidth="Infinity"/>
+    <Label text="Teléfono (opcional)" styleClass="field-label"/>
+    <TextField fx:id="phoneField"/>
+    <Label fx:id="errorLabel" styleClass="field-error" wrapText="true" visible="false" managed="false"/>
+</VBox>

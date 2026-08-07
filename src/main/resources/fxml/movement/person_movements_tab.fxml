@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.playground.fondoahorro.presentation.movement.PersonMovementsTabController"
+      spacing="12" style="-fx-padding: 16;">
+    <TableView fx:id="table" VBox.vgrow="ALWAYS">
+        <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN"/>
+        </columnResizePolicy>
+        <columns>
+            <TableColumn fx:id="dateColumn" text="Fecha" prefWidth="100"/>
+            <TableColumn fx:id="kindColumn" text="Tipo" prefWidth="80"/>
+            <TableColumn fx:id="categoryColumn" text="Categoría" prefWidth="160"/>
+            <TableColumn fx:id="fundColumn" text="Fondo" prefWidth="150"/>
+            <TableColumn fx:id="methodColumn" text="Medio" prefWidth="120"/>
+            <TableColumn fx:id="valueColumn" text="Valor" prefWidth="120" styleClass="money-column"/>
+        </columns>
+    </TableView>
+</VBox>

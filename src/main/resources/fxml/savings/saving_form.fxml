@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.playground.fondoahorro.presentation.savings.SavingFormController"
+      spacing="10" prefWidth="360">
+    <padding>
+        <Insets top="16" right="16" bottom="4" left="16"/>
+    </padding>
+    <Label text="Datos del ahorro" styleClass="section-title"/>
+    <Label text="Persona" styleClass="field-label"/>
+    <ComboBox fx:id="personCombo" maxWidth="Infinity"/>
+    <Label text="Valor" styleClass="field-label"/>
+    <TextField fx:id="amountField" promptText="Ej: 250000"/>
+    <Label text="Fecha" styleClass="field-label"/>
+    <DatePicker fx:id="datePicker" maxWidth="Infinity"/>
+    <Label text="Medio de pago" styleClass="field-label"/>
+    <ComboBox fx:id="methodCombo" maxWidth="Infinity"/>
+    <Label text="Observación (opcional)" styleClass="field-label"/>
+    <TextField fx:id="notesField"/>
+    <Label fx:id="errorLabel" styleClass="field-error" wrapText="true" visible="false" managed="false"/>
+</VBox>

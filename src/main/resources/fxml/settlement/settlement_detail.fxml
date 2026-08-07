@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.playground.fondoahorro.presentation.settlement.SettlementDetailController"
+      spacing="16">
+    <HBox spacing="12" alignment="CENTER_LEFT">
+        <Button text="← Volver" onAction="#handleBack" styleClass="secondary-button"/>
+    </HBox>
+    <HBox spacing="16" alignment="CENTER_LEFT">
+        <Label fx:id="personLabel" styleClass="page-title"/>
+        <Label fx:id="yearLabel" styleClass="page-subtitle"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Button fx:id="prepareButton" text="Preparar liquidación" onAction="#handlePrepare" styleClass="primary-button"/>
+    </HBox>
+    <Label fx:id="statusLabel" styleClass="metric-label"/>
+    <VBox styleClass="card" spacing="16">
+        <HBox spacing="16">
+            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                <Label text="AHORRO ACUMULADO" styleClass="metric-label"/>
+                <Label fx:id="savingsLabel" styleClass="metric-value"/>
+            </VBox>
+            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                <Label fx:id="interestTitleLabel" text="INTERÉS" styleClass="metric-label"/>
+                <Label fx:id="interestLabel" styleClass="metric-value"/>
+            </VBox>
+        </HBox>
+        <Region styleClass="divider" prefHeight="1" maxHeight="1"/>
+        <HBox alignment="CENTER_LEFT" spacing="8">
+            <Label text="TOTAL A RECIBIR" styleClass="metric-label"/>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Label fx:id="totalLabel" styleClass="metric-hero value-income"/>
+        </HBox>
+    </VBox>
+</VBox>
