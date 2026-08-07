@@ -57,6 +57,7 @@ jobs:
             --main-jar semillero-app.jar \
             --main-class com.playground.fondoahorro.Main \
             --icon src/main/resources/icon/app.ico \
+            --win-console \
             --win-per-user-install \
             --win-shortcut \
             --win-menu \
