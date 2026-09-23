@@ -9,15 +9,17 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.playground.fondoahorro.presentation.loan.LoanPaymentFormController"
+      fx:controller="com.playground.fondoahorro.presentation.loan.controller.LoanPaymentFormController"
       spacing="10" prefWidth="360">
     <padding>
         <Insets top="16" right="16" bottom="4" left="16"/>
     </padding>
     <Label text="Datos del pago" styleClass="section-title"/>
-    <Label fx:id="outstandingLabel" styleClass="metric-label"/>
+    <Label fx:id="interestOwedLabel" styleClass="metric-label"/>
+    <Label fx:id="principalBalanceLabel" styleClass="metric-label"/>
     <Label text="Valor del pago" styleClass="field-label"/>
     <TextField fx:id="amountField" promptText="Ej: 100000"/>
+    <Label fx:id="breakdownPreviewLabel" wrapText="true" styleClass="metric-label"/>
     <Label text="Fecha" styleClass="field-label"/>
     <DatePicker fx:id="datePicker" maxWidth="Infinity"/>
     <Label text="Medio de pago" styleClass="field-label"/>

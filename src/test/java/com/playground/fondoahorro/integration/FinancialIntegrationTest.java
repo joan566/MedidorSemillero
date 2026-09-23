@@ -1,37 +1,44 @@
 package com.playground.fondoahorro.integration;
 
-import com.playground.fondoahorro.application.birthday.BirthdayGiftService;
-import com.playground.fondoahorro.application.loan.LoanService;
-import com.playground.fondoahorro.application.movement.MovementService;
-import com.playground.fondoahorro.application.person.PersonService;
-import com.playground.fondoahorro.application.savings.SavingService;
-import com.playground.fondoahorro.application.settings.AppSettingsService;
-import com.playground.fondoahorro.application.settlement.SettlementService;
-import com.playground.fondoahorro.domain.loan.Loan;
-import com.playground.fondoahorro.domain.money.Money;
-import com.playground.fondoahorro.domain.movement.Fund;
-import com.playground.fondoahorro.domain.movement.FundBalances;
-import com.playground.fondoahorro.domain.movement.Movement;
-import com.playground.fondoahorro.domain.movement.MovementFilter;
-import com.playground.fondoahorro.domain.movement.MovementKind;
-import com.playground.fondoahorro.domain.movement.MovementRepository;
-import com.playground.fondoahorro.domain.movement.MovementType;
-import com.playground.fondoahorro.domain.movement.MovementTypeRepository;
-import com.playground.fondoahorro.domain.movement.PaymentMethod;
-import com.playground.fondoahorro.domain.person.Person;
-import com.playground.fondoahorro.domain.savings.Saving;
-import com.playground.fondoahorro.domain.settlement.Settlement;
-import com.playground.fondoahorro.infrastructure.birthday.JdbcBirthdayGiftRepository;
-import com.playground.fondoahorro.infrastructure.database.DatabaseManager;
-import com.playground.fondoahorro.infrastructure.database.TransactionRunner;
-import com.playground.fondoahorro.infrastructure.loan.JdbcLoanPaymentRepository;
-import com.playground.fondoahorro.infrastructure.loan.JdbcLoanRepository;
-import com.playground.fondoahorro.infrastructure.movement.JdbcMovementRepository;
-import com.playground.fondoahorro.infrastructure.movement.JdbcMovementTypeRepository;
-import com.playground.fondoahorro.infrastructure.person.JdbcPersonRepository;
-import com.playground.fondoahorro.infrastructure.savings.JdbcSavingRepository;
-import com.playground.fondoahorro.infrastructure.settings.JdbcAppSettingsRepository;
-import com.playground.fondoahorro.infrastructure.settlement.JdbcSettlementRepository;
+import com.playground.fondoahorro.domain.inputport.BirthdayGiftService;
+import com.playground.fondoahorro.application.importing.dto.ImportExecutionException;
+import com.playground.fondoahorro.application.importing.dto.ImportPlan;
+import com.playground.fondoahorro.application.importing.service.ImportService;
+import com.playground.fondoahorro.domain.inputport.LoanService;
+import com.playground.fondoahorro.domain.inputport.MovementService;
+import com.playground.fondoahorro.domain.inputport.PersonService;
+import com.playground.fondoahorro.domain.inputport.SavingService;
+import com.playground.fondoahorro.domain.inputport.AppSettingsService;
+import com.playground.fondoahorro.domain.inputport.SettlementService;
+import com.playground.fondoahorro.domain.entity.Loan;
+import com.playground.fondoahorro.domain.entity.LoanInterestCharge;
+import com.playground.fondoahorro.domain.entity.LoanPayment;
+import com.playground.fondoahorro.domain.vo.Money;
+import com.playground.fondoahorro.domain.enums.Fund;
+import com.playground.fondoahorro.domain.vo.FundBalances;
+import com.playground.fondoahorro.domain.entity.Movement;
+import com.playground.fondoahorro.domain.vo.MovementFilter;
+import com.playground.fondoahorro.domain.enums.MovementKind;
+import com.playground.fondoahorro.domain.outputport.MovementRepository;
+import com.playground.fondoahorro.domain.entity.MovementType;
+import com.playground.fondoahorro.domain.outputport.MovementTypeRepository;
+import com.playground.fondoahorro.domain.enums.PaymentMethod;
+import com.playground.fondoahorro.domain.entity.Person;
+import com.playground.fondoahorro.domain.vo.PersonSummary;
+import com.playground.fondoahorro.domain.entity.Saving;
+import com.playground.fondoahorro.domain.entity.Settlement;
+import com.playground.fondoahorro.infrastructure.repository.JdbcBirthdayGiftRepository;
+import com.playground.fondoahorro.infrastructure.config.DatabaseManager;
+import com.playground.fondoahorro.infrastructure.transaction.TransactionRunner;
+import com.playground.fondoahorro.infrastructure.repository.JdbcLoanInterestChargeRepository;
+import com.playground.fondoahorro.infrastructure.repository.JdbcLoanPaymentRepository;
+import com.playground.fondoahorro.infrastructure.repository.JdbcLoanRepository;
+import com.playground.fondoahorro.infrastructure.repository.JdbcMovementRepository;
+import com.playground.fondoahorro.infrastructure.repository.JdbcMovementTypeRepository;
+import com.playground.fondoahorro.infrastructure.repository.JdbcPersonRepository;
+import com.playground.fondoahorro.infrastructure.repository.JdbcSavingRepository;
+import com.playground.fondoahorro.infrastructure.repository.JdbcAppSettingsRepository;
+import com.playground.fondoahorro.infrastructure.repository.JdbcSettlementRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,9 +49,19 @@ import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.playground.fondoahorro.application.person.service.PersonServiceImpl;
+import com.playground.fondoahorro.application.loan.service.LoanServiceImpl;
+import com.playground.fondoahorro.application.movement.service.MovementServiceImpl;
+import com.playground.fondoahorro.application.savings.service.SavingServiceImpl;
+import com.playground.fondoahorro.application.settings.service.AppSettingsServiceImpl;
+import com.playground.fondoahorro.application.settlement.service.SettlementServiceImpl;
+import com.playground.fondoahorro.application.birthday.service.BirthdayGiftServiceImpl;
+import com.playground.fondoahorro.application.importing.service.ImportServiceImpl;
 
 /**
  * Exercises the financial rules that need a real database to prove: balances
@@ -64,6 +81,7 @@ class FinancialIntegrationTest {
     private BirthdayGiftService birthdayGiftService;
     private MovementService movementService;
     private SettlementService settlementService;
+    private ImportService importService;
     private MovementRepository movementRepository;
     private MovementTypeRepository movementTypeRepository;
 
@@ -81,18 +99,20 @@ class FinancialIntegrationTest {
         var savingRepository = new JdbcSavingRepository();
         var loanRepository = new JdbcLoanRepository();
         var loanPaymentRepository = new JdbcLoanPaymentRepository();
+        var loanInterestChargeRepository = new JdbcLoanInterestChargeRepository();
         var settlementRepository = new JdbcSettlementRepository();
         var giftRepository = new JdbcBirthdayGiftRepository();
-        var appSettingsService = new AppSettingsService(new JdbcAppSettingsRepository());
+        var appSettingsService = new AppSettingsServiceImpl(new JdbcAppSettingsRepository());
 
-        personService = new PersonService(personRepository);
-        savingService = new SavingService(savingRepository, movementRepository, movementTypeRepository, personRepository);
-        loanService = new LoanService(loanRepository, loanPaymentRepository, movementRepository, movementTypeRepository,
+        personService = new PersonServiceImpl(personRepository);
+        savingService = new SavingServiceImpl(savingRepository, movementRepository, movementTypeRepository, personRepository);
+        loanService = new LoanServiceImpl(loanRepository, loanPaymentRepository, loanInterestChargeRepository, movementRepository,
+                movementTypeRepository, personRepository, appSettingsService);
+        birthdayGiftService = new BirthdayGiftServiceImpl(giftRepository, movementRepository, movementTypeRepository,
                 personRepository, appSettingsService);
-        birthdayGiftService = new BirthdayGiftService(giftRepository, movementRepository, movementTypeRepository,
-                personRepository, appSettingsService);
-        movementService = new MovementService(movementRepository, movementTypeRepository, personRepository);
-        settlementService = new SettlementService(settlementRepository, savingRepository, personRepository, appSettingsService);
+        movementService = new MovementServiceImpl(movementRepository, movementTypeRepository, personRepository);
+        settlementService = new SettlementServiceImpl(settlementRepository, savingRepository, personRepository, appSettingsService);
+        importService = new ImportServiceImpl(personService, savingService, loanService);
     }
 
     private static Money pesos(String value) {
@@ -132,6 +152,48 @@ class FinancialIntegrationTest {
 
         int movementsForPerson = movementService.list(new MovementFilter(null, null, null, null, null, person.id(), null)).size();
         assertEquals(3, movementsForPerson, "el aporte, el desembolso y el pago deben quedar juntos, todos registrados");
+    }
+
+    @Test
+    void readingAnOverdueLoanGeneratesItsPendingInterestCharges() {
+        Person person = personService.createPerson("Test Interes Vencido", LocalDate.of(1990, 1, 1), null);
+        LocalDate loanDate = LocalDate.now().minusMonths(3);
+        savingService.registerSaving(person.id(), pesos("200000"), loanDate, PaymentMethod.CASH, null);
+        Loan loan = loanService.createLoan(person.id(), pesos("100000"), 300, loanDate, PaymentMethod.CASH, null);
+
+        // findById is a read, but with monthly-on-balance interest and no
+        // background scheduler, reading a stale loan is what catches it up —
+        // this proves that side effect actually fires instead of staying implicit.
+        Loan reloaded = loanService.findById(loan.id()).orElseThrow();
+        List<LoanInterestCharge> charges = loanService.chargesForLoan(loan.id());
+
+        assertTrue(charges.size() >= 1, "at least one monthly charge should already be overdue");
+        assertEquals(pesos("100000"), reloaded.principalBalance(), "accrual never touches principal");
+        assertEquals(pesos("3000").multiply(BigDecimal.valueOf(charges.size())), reloaded.interestOwed(),
+                "3% of the untouched 100000 balance per elapsed month, not capitalized");
+    }
+
+    @Test
+    void aBackdatedPaymentIsAllocatedOnlyAgainstInterestDueByItsOwnDateNotByToday() {
+        Person person = personService.createPerson("Test Pago Retroactivo", LocalDate.of(1990, 1, 1), null);
+        LocalDate loanDate = LocalDate.now().minusMonths(2);
+        savingService.registerSaving(person.id(), pesos("200000"), loanDate, PaymentMethod.CASH, null);
+        Loan loan = loanService.createLoan(person.id(), pesos("100000"), 300, loanDate, PaymentMethod.CASH, null);
+
+        // Dated exactly one month after the loan, when only the first month's
+        // 3000 interest charge is due — not the second month's, which is only
+        // due "today". If accrual wrongly ran up to today before allocating
+        // this payment, it would compete against interest that hadn't accrued yet.
+        LocalDate firstPaymentDate = loanDate.plusMonths(1);
+        LoanPayment payment = loanService.registerPayment(loan.id(), pesos("3000"), firstPaymentDate, PaymentMethod.CASH, null);
+
+        assertEquals(pesos("3000"), payment.interestPortion());
+        assertEquals(Money.ZERO, payment.principalPortion());
+
+        Loan reloadedToday = loanService.findById(loan.id()).orElseThrow();
+        assertEquals(pesos("3000"), reloadedToday.interestOwed(),
+                "the second month's charge should still be pending after only the first month's interest was paid");
+        assertEquals(pesos("100000"), reloadedToday.principalBalance());
     }
 
     @Test
@@ -235,5 +297,81 @@ class FinancialIntegrationTest {
 
         assertEquals(pesos("2000000"), settlement2026.savingsTotal(), "no debe incluir el ahorro de 2025");
         assertEquals(pesos("60000"), settlement2026.interestAmount());
+    }
+
+    /**
+     * Regression guard: PersonRepository.SUMMARY_SELECT computes outstandingDebt
+     * with its own hand-written SQL against the loans table (not through
+     * LoanService), so a schema change to loans' columns (like the V11 monthly-
+     * interest migration) can silently break it without any other test noticing.
+     */
+    @Test
+    void personSummaryReflectsAnActiveLoansPrincipalBalancePlusInterestOwed() {
+        Person person = personService.createPerson("Test Resumen Persona Con Prestamo", LocalDate.of(1990, 1, 1), null);
+        savingService.registerSaving(person.id(), pesos("200000"), LocalDate.now(), PaymentMethod.CASH, null);
+        Loan loan = loanService.createLoan(person.id(), pesos("100000"), 300, LocalDate.now(), PaymentMethod.CASH, null);
+
+        PersonSummary summary = personService.getSummary(person.id());
+        assertEquals(loan.totalOwed(), summary.outstandingDebt());
+        assertEquals(pesos("200000"), summary.totalSavings());
+
+        PersonSummary fromList = personService.listWithSummary("Test Resumen Persona Con Prestamo", true).stream()
+                .findFirst().orElseThrow();
+        assertEquals(loan.totalOwed(), fromList.outstandingDebt());
+    }
+
+    @Test
+    void importingAValidPlanReplaysEverythingInChronologicalOrderAndReconstructsTheLoanCorrectly() {
+        LocalDate loanDate = LocalDate.now().minusMonths(2);
+        LocalDate firstPaymentDate = loanDate.plusMonths(1);
+
+        ImportPlan plan = new ImportPlan(
+                List.of(new ImportPlan.PersonRow(2, "Test Import Pipeline", LocalDate.of(1985, 3, 15), "3001234567")),
+                List.of(new ImportPlan.SavingRow(2, "Test Import Pipeline", pesos("200000"), loanDate, PaymentMethod.CASH, "aporte")),
+                List.of(new ImportPlan.LoanRow(2, "1", "Test Import Pipeline", pesos("100000"), 300, loanDate, PaymentMethod.CASH,
+                        "prestamo importado")),
+                // Covers exactly the first month's 3000 interest, plus a 30000 abono a capital.
+                List.of(new ImportPlan.PaymentRow(2, "1", firstPaymentDate, pesos("33000"), PaymentMethod.CASH, "interes + abono")));
+
+        ImportService.ImportSummary summary = importService.execute(plan);
+
+        assertEquals(1, summary.personsCreated());
+        assertEquals(1, summary.savingsCreated());
+        assertEquals(1, summary.loansCreated());
+        assertEquals(1, summary.paymentsCreated());
+
+        Person person = personService.list("Test Import Pipeline", true).stream().findFirst().orElseThrow();
+        assertEquals(LocalDate.of(1985, 3, 15), person.birthDate());
+
+        List<Loan> loans = loanService.historyForPerson(person.id());
+        assertEquals(1, loans.size());
+        Loan loan = loans.get(0);
+        assertEquals(pesos("70000"), loan.principalBalance(), "100000 - 30000 abono a capital");
+        assertEquals(pesos("33000"), loan.paidAmount());
+
+        List<LoanPayment> payments = loanService.paymentsForLoan(loan.id());
+        assertEquals(1, payments.size());
+        assertEquals(pesos("3000"), payments.get(0).interestPortion());
+        assertEquals(pesos("30000"), payments.get(0).principalPortion());
+
+        int movementsForPerson = movementService.list(new MovementFilter(null, null, null, null, null, person.id(), null)).size();
+        assertEquals(3, movementsForPerson, "el ahorro, el desembolso del préstamo y el pago deben quedar registrados");
+    }
+
+    @Test
+    void anImportRowRejectedAtExecutionTimeRollsBackEverythingCreatedEarlierInTheSameImport() {
+        LocalDate today = LocalDate.now();
+        ImportPlan plan = new ImportPlan(
+                List.of(new ImportPlan.PersonRow(2, "Test Import Rollback Exec", LocalDate.of(1985, 3, 15), null)),
+                List.of(new ImportPlan.SavingRow(2, "Test Import Rollback Exec", pesos("10000"), today, PaymentMethod.CASH, null)),
+                // Requests far more than the fund could ever have — rejected only once actually executed.
+                List.of(new ImportPlan.LoanRow(2, "1", "Test Import Rollback Exec", pesos("999999999"), 300, today,
+                        PaymentMethod.CASH, null)),
+                List.of());
+
+        assertThrows(ImportExecutionException.class, () -> importService.execute(plan));
+
+        assertTrue(personService.list("Test Import Rollback Exec", true).isEmpty(),
+                "the person created earlier in the same transaction must be rolled back too");
     }
 }

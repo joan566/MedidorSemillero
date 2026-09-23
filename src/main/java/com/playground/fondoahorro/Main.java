@@ -1,6 +1,6 @@
 package com.playground.fondoahorro;
 
-import com.playground.fondoahorro.infrastructure.database.DatabaseManager;
+import com.playground.fondoahorro.infrastructure.config.DatabaseManager;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;

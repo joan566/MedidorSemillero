@@ -1,8 +1,8 @@
 package com.playground.fondoahorro.presentation.shared;
 
-import com.playground.fondoahorro.domain.movement.Fund;
-import com.playground.fondoahorro.domain.movement.MovementKind;
-import com.playground.fondoahorro.domain.movement.PaymentMethod;
+import com.playground.fondoahorro.domain.enums.Fund;
+import com.playground.fondoahorro.domain.enums.MovementKind;
+import com.playground.fondoahorro.domain.enums.PaymentMethod;
 
 /** Spanish display labels for the domain enums shown across every screen. */
 public final class Labels {

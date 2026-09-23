@@ -7,7 +7,7 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.playground.fondoahorro.presentation.movement.PersonMovementsTabController"
+      fx:controller="com.playground.fondoahorro.presentation.movement.controller.PersonMovementsTabController"
       spacing="12" style="-fx-padding: 16;">
     <TableView fx:id="table" VBox.vgrow="ALWAYS">
         <columnResizePolicy>

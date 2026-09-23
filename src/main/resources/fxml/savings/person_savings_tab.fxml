@@ -10,7 +10,7 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.playground.fondoahorro.presentation.savings.PersonSavingsTabController"
+      fx:controller="com.playground.fondoahorro.presentation.savings.controller.PersonSavingsTabController"
       spacing="12" style="-fx-padding: 16;">
     <HBox spacing="10" alignment="CENTER_LEFT">
         <Pane HBox.hgrow="ALWAYS"/>

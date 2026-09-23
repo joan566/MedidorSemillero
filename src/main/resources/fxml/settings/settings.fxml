@@ -13,7 +13,7 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.playground.fondoahorro.presentation.settings.SettingsController"
+      fx:controller="com.playground.fondoahorro.presentation.settings.controller.SettingsController"
       spacing="16">
     <VBox spacing="2">
         <Label text="Configuración" styleClass="page-title"/>
@@ -98,6 +98,17 @@
                     <Label text="Restaurar reemplaza TODOS los datos actuales por los de la copia elegida. La aplicación se cerrará después; ábrela de nuevo para continuar."
                            styleClass="metric-label" wrapText="true"/>
                     <Button text="Restaurar copia de seguridad" onAction="#handleRestoreBackup" styleClass="danger-button"/>
+                </VBox>
+            </VBox>
+            <VBox styleClass="card" spacing="14">
+                <Label text="Importar datos desde Excel" styleClass="section-title"/>
+                <VBox spacing="8">
+                    <Label text="Descarga la plantilla, complétala con personas, ahorros y préstamos (con su historial de pagos), y luego impórtala. Útil para cargar de una vez los datos que ya llevas en otro lado, sin escribirlos uno por uno."
+                           styleClass="metric-label" wrapText="true"/>
+                    <HBox spacing="10">
+                        <Button text="Descargar plantilla" onAction="#handleDownloadTemplate" styleClass="secondary-button"/>
+                        <Button text="Importar desde Excel" onAction="#handleImportFromExcel" styleClass="primary-button"/>
+                    </HBox>
                 </VBox>
             </VBox>
         </VBox>

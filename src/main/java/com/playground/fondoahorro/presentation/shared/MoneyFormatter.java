@@ -1,6 +1,6 @@
 package com.playground.fondoahorro.presentation.shared;
 
-import com.playground.fondoahorro.domain.money.Money;
+import com.playground.fondoahorro.domain.vo.Money;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

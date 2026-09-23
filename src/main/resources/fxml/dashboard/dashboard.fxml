@@ -9,7 +9,7 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.playground.fondoahorro.presentation.dashboard.DashboardController"
+      fx:controller="com.playground.fondoahorro.presentation.dashboard.controller.DashboardController"
       spacing="16">
     <VBox spacing="2">
         <Label fx:id="greetingLabel" styleClass="page-title"/>

@@ -4,13 +4,14 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.playground.fondoahorro.presentation.loan.LoanDetailController"
+      fx:controller="com.playground.fondoahorro.presentation.loan.controller.LoanDetailController"
       spacing="16">
     <HBox spacing="12" alignment="CENTER_LEFT">
         <Button text="← Volver" onAction="#handleBack" styleClass="secondary-button"/>
@@ -27,22 +28,22 @@
             <Label fx:id="principalLabel" styleClass="metric-value"/>
         </VBox>
         <VBox styleClass="card" spacing="6" HBox.hgrow="ALWAYS">
-            <Label text="INTERÉS" styleClass="metric-label"/>
-            <Label fx:id="interestLabel" styleClass="metric-value"/>
+            <Label text="TASA DE INTERÉS" styleClass="metric-label"/>
+            <Label fx:id="rateLabel" styleClass="metric-value"/>
         </VBox>
         <VBox styleClass="card" spacing="6" HBox.hgrow="ALWAYS">
-            <Label text="TOTAL A PAGAR" styleClass="metric-label"/>
-            <Label fx:id="totalLabel" styleClass="metric-value"/>
+            <Label text="SALDO DE CAPITAL" styleClass="metric-label"/>
+            <Label fx:id="principalBalanceLabel" styleClass="metric-value value-expense"/>
         </VBox>
     </HBox>
     <HBox spacing="16">
         <VBox styleClass="card" spacing="6" HBox.hgrow="ALWAYS">
-            <Label text="PAGADO" styleClass="metric-label"/>
-            <Label fx:id="paidLabel" styleClass="metric-value value-income"/>
+            <Label text="INTERÉS PENDIENTE" styleClass="metric-label"/>
+            <Label fx:id="interestOwedLabel" styleClass="metric-value value-expense"/>
         </VBox>
         <VBox styleClass="card" spacing="6" HBox.hgrow="ALWAYS">
-            <Label text="PENDIENTE" styleClass="metric-label"/>
-            <Label fx:id="outstandingLabel" styleClass="metric-value value-expense"/>
+            <Label text="PAGADO (histórico)" styleClass="metric-label"/>
+            <Label fx:id="paidLabel" styleClass="metric-value value-income"/>
         </VBox>
     </HBox>
     <HBox spacing="24">
@@ -55,16 +56,23 @@
             <Label fx:id="notesLabel"/>
         </VBox>
     </HBox>
-    <Label text="Historial de pagos" styleClass="section-title"/>
-    <TableView fx:id="paymentsTable" VBox.vgrow="ALWAYS">
+    <Label text="Movimientos del préstamo" styleClass="section-title"/>
+    <HBox spacing="8" alignment="CENTER_LEFT">
+        <ToggleButton fx:id="allToggle" text="Todos" styleClass="secondary-button"/>
+        <ToggleButton fx:id="paymentsToggle" text="Pagos" styleClass="secondary-button"/>
+        <ToggleButton fx:id="chargesToggle" text="Cobros" styleClass="secondary-button"/>
+        <ToggleButton fx:id="pendingToggle" text="Pendientes" styleClass="secondary-button"/>
+    </HBox>
+    <TableView fx:id="timelineTable" VBox.vgrow="ALWAYS">
         <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN"/>
         </columnResizePolicy>
         <columns>
-            <TableColumn fx:id="paymentDateColumn" text="Fecha" prefWidth="120"/>
-            <TableColumn fx:id="paymentAmountColumn" text="Valor" prefWidth="140" styleClass="money-column"/>
-            <TableColumn fx:id="paymentMethodColumn" text="Medio" prefWidth="140"/>
-            <TableColumn fx:id="paymentNotesColumn" text="Observación" prefWidth="260"/>
+            <TableColumn fx:id="timelineDateColumn" text="Fecha" prefWidth="100"/>
+            <TableColumn fx:id="timelineTypeColumn" text="Tipo" prefWidth="90"/>
+            <TableColumn fx:id="timelineDetailColumn" text="Detalle" prefWidth="280"/>
+            <TableColumn fx:id="timelineAmountColumn" text="Monto" prefWidth="120" styleClass="money-column"/>
+            <TableColumn fx:id="timelineStatusColumn" text="Estado" prefWidth="110"/>
         </columns>
     </TableView>
 </VBox>

@@ -9,7 +9,7 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.playground.fondoahorro.presentation.settlement.SettlementDetailController"
+      fx:controller="com.playground.fondoahorro.presentation.settlement.controller.SettlementDetailController"
       spacing="16">
     <HBox spacing="12" alignment="CENTER_LEFT">
         <Button text="← Volver" onAction="#handleBack" styleClass="secondary-button"/>

@@ -12,7 +12,7 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.playground.fondoahorro.presentation.loan.LoanListController"
+      fx:controller="com.playground.fondoahorro.presentation.loan.controller.LoanListController"
       spacing="16">
     <HBox spacing="12" alignment="CENTER_LEFT">
         <VBox spacing="2">
@@ -49,7 +49,7 @@
             <TableColumn fx:id="personColumn" text="Persona" prefWidth="180"/>
             <TableColumn fx:id="dateColumn" text="Fecha" prefWidth="100"/>
             <TableColumn fx:id="amountColumn" text="Monto" prefWidth="110" styleClass="money-column"/>
-            <TableColumn fx:id="totalColumn" text="Total a pagar" prefWidth="120" styleClass="money-column"/>
+            <TableColumn fx:id="totalColumn" text="Saldo capital" prefWidth="120" styleClass="money-column"/>
             <TableColumn fx:id="paidColumn" text="Pagado" prefWidth="110" styleClass="money-column"/>
             <TableColumn fx:id="outstandingColumn" text="Pendiente" prefWidth="110" styleClass="money-column"/>
             <TableColumn fx:id="statusColumn" text="Estado" prefWidth="90"/>

@@ -12,7 +12,7 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.playground.fondoahorro.presentation.person.PersonListController"
+      fx:controller="com.playground.fondoahorro.presentation.person.controller.PersonListController"
       spacing="16">
     <HBox spacing="12" alignment="CENTER_LEFT">
         <VBox spacing="2">

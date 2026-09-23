@@ -8,7 +8,7 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.playground.fondoahorro.presentation.person.PersonFormController"
+      fx:controller="com.playground.fondoahorro.presentation.person.controller.PersonFormController"
       spacing="10" prefWidth="360">
     <padding>
         <Insets top="16" right="16" bottom="4" left="16"/>

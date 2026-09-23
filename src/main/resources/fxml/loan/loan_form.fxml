@@ -11,7 +11,7 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.playground.fondoahorro.presentation.loan.LoanFormController"
+      fx:controller="com.playground.fondoahorro.presentation.loan.controller.LoanFormController"
       spacing="10" prefWidth="360">
     <padding>
         <Insets top="16" right="16" bottom="4" left="16"/>
@@ -32,15 +32,11 @@
 
     <VBox styleClass="card" spacing="6">
         <HBox alignment="CENTER_LEFT" spacing="8">
-            <Label text="Interés aplicado" styleClass="metric-label"/>
+            <Label text="Interés del primer mes" styleClass="section-title"/>
             <Pane HBox.hgrow="ALWAYS"/>
-            <Label fx:id="interestPreviewLabel" styleClass="metric-label"/>
+            <Label fx:id="interestPreviewLabel" styleClass="metric-value"/>
         </HBox>
-        <HBox alignment="CENTER_LEFT" spacing="8">
-            <Label text="Total a pagar" styleClass="section-title"/>
-            <Pane HBox.hgrow="ALWAYS"/>
-            <Label fx:id="totalPreviewLabel" styleClass="metric-value"/>
-        </HBox>
+        <Label text="El interés se recalcula cada mes sobre el saldo de capital que quede pendiente." wrapText="true" styleClass="metric-label"/>
     </VBox>
 
     <Label fx:id="errorLabel" styleClass="field-error" wrapText="true" visible="false" managed="false"/>

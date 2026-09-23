@@ -11,7 +11,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.playground.fondoahorro.presentation.shell.ShellController"
+            fx:controller="com.playground.fondoahorro.presentation.shell.controller.ShellController"
             styleClass="app-root">
     <left>
         <VBox styleClass="sidebar" spacing="4" prefWidth="224">

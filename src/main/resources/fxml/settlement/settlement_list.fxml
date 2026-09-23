@@ -9,7 +9,7 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.playground.fondoahorro.presentation.settlement.SettlementListController"
+      fx:controller="com.playground.fondoahorro.presentation.settlement.controller.SettlementListController"
       spacing="16">
     <HBox spacing="12" alignment="CENTER_LEFT">
         <VBox spacing="2">

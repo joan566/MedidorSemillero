@@ -1,0 +1,165 @@
+Project fondoahorro {
+  database_type: 'SQLite'
+}
+
+Table persons {
+  id integer [pk, increment]
+  name text [not null]
+  birth_date text [not null]
+  phone text
+  active integer [not null, default: 1, note: 'boolean 0/1']
+  created_at text [not null]
+  updated_at text [not null]
+
+  indexes {
+    active
+    name
+  }
+}
+
+Table app_settings {
+  key text [pk]
+  value text [not null]
+  updated_at text [not null]
+
+  note: 'Key/value config, e.g. loan.interest_rate_bps, settlement.interest_rate_bps, birthday.gift_default_amount_cents'
+}
+
+Table movement_types {
+  id integer [pk, increment]
+  name text [not null, unique]
+  kind text [not null, note: "CHECK IN ('INCOME','EXPENSE')"]
+  code text [unique, note: 'unique when not null; identifies fixed system types']
+  active integer [not null, default: 1, note: 'boolean 0/1']
+  created_at text [not null]
+  updated_at text [not null]
+
+  indexes {
+    (kind, active)
+  }
+}
+
+Table movements {
+  id integer [pk, increment]
+  movement_type_id integer [not null, ref: > movement_types.id]
+  fund text [not null, note: "CHECK IN ('SAVINGS','BIRTHDAY')"]
+  payment_method text [not null, note: "CHECK IN ('CASH','TRANSFER')"]
+  kind text [not null, note: "CHECK IN ('INCOME','EXPENSE')"]
+  amount_cents integer [not null, note: '> 0']
+  movement_date text [not null]
+  person_id integer [ref: > persons.id]
+  reference_table text [note: 'polymorphic ref target table, e.g. savings/loans/loan_payments/birthday_gifts/settlements']
+  reference_id integer [note: 'polymorphic ref target id']
+  notes text
+  created_at text [not null]
+
+  indexes {
+    movement_date
+    (fund, payment_method, kind)
+    person_id
+    movement_type_id
+    (reference_table, reference_id)
+  }
+}
+
+Table savings {
+  id integer [pk, increment]
+  person_id integer [not null, ref: > persons.id]
+  amount_cents integer [not null, note: '> 0']
+  saving_date text [not null]
+  payment_method text [not null, note: "CHECK IN ('CASH','TRANSFER')"]
+  notes text
+  created_at text [not null]
+
+  indexes {
+    person_id
+    saving_date
+  }
+}
+
+Table loans {
+  id integer [pk, increment]
+  person_id integer [not null, ref: > persons.id]
+  principal_amount_cents integer [not null, note: '> 0']
+  interest_rate_bps integer [not null, note: 'snapshot at creation, e.g. 300 = 3.00%']
+  paid_amount_cents integer [not null, default: 0]
+  loan_date text [not null]
+  status text [not null, default: 'ACTIVE', note: "CHECK IN ('ACTIVE','PAID')"]
+  notes text
+  created_at text [not null]
+  updated_at text [not null]
+  principal_balance_cents integer [not null, default: 0, note: 'outstanding capital']
+  interest_owed_cents integer [not null, default: 0, note: 'accrued unpaid interest (mora), never capitalized']
+  next_accrual_date text [not null, default: '1970-01-01', note: 'date of next monthly interest charge']
+
+  indexes {
+    person_id
+    status
+  }
+}
+
+Table loan_payments {
+  id integer [pk, increment]
+  loan_id integer [not null, ref: > loans.id]
+  amount_cents integer [not null, note: '> 0']
+  payment_date text [not null]
+  payment_method text [not null, note: "CHECK IN ('CASH','TRANSFER')"]
+  notes text
+  created_at text [not null]
+  interest_portion_cents integer [not null, default: 0]
+  principal_portion_cents integer [not null, default: 0]
+
+  indexes {
+    loan_id
+    payment_date
+  }
+}
+
+Table loan_interest_charges {
+  id integer [pk, increment]
+  loan_id integer [not null, ref: > loans.id]
+  due_date text [not null]
+  principal_balance_cents integer [not null]
+  interest_amount_cents integer [not null]
+  paid_amount_cents integer [not null, default: 0]
+  status text [not null, note: "CHECK IN ('PENDING','PARTIAL','PAID')"]
+  created_at text [not null]
+
+  indexes {
+    loan_id
+    (loan_id, status)
+  }
+}
+
+Table birthday_gifts {
+  id integer [pk, increment]
+  person_id integer [not null, ref: > persons.id]
+  year integer [not null]
+  gift_date text [not null]
+  amount_cents integer [not null, note: '> 0']
+  payment_method text [not null, note: "CHECK IN ('CASH','TRANSFER')"]
+  notes text
+  created_at text [not null]
+
+  indexes {
+    person_id
+    (person_id, year) [unique]
+  }
+}
+
+Table settlements {
+  id integer [pk, increment]
+  person_id integer [not null, ref: > persons.id]
+  year integer [not null]
+  savings_total_cents integer [not null]
+  interest_rate_bps integer [not null]
+  interest_amount_cents integer [not null]
+  total_amount_cents integer [not null]
+  prepared_at text [not null]
+
+  indexes {
+    person_id
+    year
+    (person_id, year) [unique]
+  }
+}
